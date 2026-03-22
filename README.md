@@ -1,18 +1,25 @@
 # Reticulum Demo
 
-Reticulum is a cryptographic mesh networking stack. Your address is the hash of your
-public key — not an IP, not a domain. Everything is end-to-end encrypted by default.
+Reticulum is a cryptographic mesh networking stack. Your address is the hash of your public key — not an IP, not a domain. Everything is end-to-end encrypted by default.
+
 It runs over WiFi, LoRa radio, serial cables, or anything else that moves bits.
 
 This repo gives you a self-contained demo in Docker. Open a browser, press a number.
 
----
+
+* * *
+
+![Reticulum is a cryptographic mesh networking stack](https://raw.githubusercontent.com/MarcusHoltz/marcusholtz.github.io/refs/heads/main/assets/img/header/header--network--reticulum-demo.jpg "not an IP, not a domain")
+
+* * *
 
 ## Requirements
 
 - [Docker](https://docs.docker.com/get-docker/) + [Docker Compose](https://docs.docker.com/compose/install/)
 - A modern browser
-- Optionally: an Android phone on the same WiFi
+- Optionally: 
+- an Android phone on the same WiFi
+- a domain for HTTPS
 
 ---
 
