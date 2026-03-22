@@ -75,21 +75,21 @@ do_menu() {
     echo -e "    ${CYAN}[2]${NC}  ${BOLD}This tab is Tab 2${NC} — connect to the server"
     echo
     sep
-    echo -e "  ${BOLD}Demo 3 — Phone → Linux Encrypted Messaging${NC}"
+    echo -e "  ${BOLD}Demo 2 — Phone → Linux Encrypted Messaging${NC}"
     echo -e "  ${DIM}Send messages from Android (Sideband) to this terminal.${NC}"
     echo -e "  ${DIM}Invite friends — everyone connected can message each other.${NC}"
     echo
     echo -e "    ${CYAN}[3]${NC}  ${BOLD}Set up Sideband + start messaging${NC}"
     echo
     sep
-    echo -e "  ${BOLD}Demo 4 — File Transfer: Phone → Linux${NC}"
+    echo -e "  ${BOLD}Demo 3 — File Transfer: Phone → Linux${NC}"
     echo -e "  ${DIM}Send any file from Sideband — photo, document, anything.${NC}"
     echo -e "  ${DIM}It lands in a folder on this machine. You'll see it arrive live.${NC}"
     echo
     echo -e "    ${CYAN}[4]${NC}  ${BOLD}Start the file receiver${NC}"
     echo
     sep
-    echo -e "  ${BOLD}Demo 5 — LoRa Mesh Radio${NC}"
+    echo -e "  ${BOLD}Demo 4 — LoRa Mesh Radio${NC}"
     echo -e "  ${DIM}Everything above works over LoRa radio — kilometers of range,${NC}"
     echo -e "  ${DIM}no WiFi, no internet, no infrastructure at all.${NC}"
     echo
@@ -225,13 +225,13 @@ do_connect() {
     rnsh "$HASH"
 }
 
-# ── demo 4: lora mesh explainer ────────────────────────────────────────────────
+# ── demo 4: lora mesh explainer ─────────────────────────────────────────────────
 
 do_lora() {
     clear
     # ── page 1 ──────────────────────────────────────────────────────────────
     clear
-    box "Demo 5 — LoRa Mesh Radio  (1/4)"
+    box "Demo 4 — LoRa Mesh Radio  (1/4)"
     echo
     echo -e "  Everything you just saw works without WiFi."
     echo
@@ -265,7 +265,7 @@ do_lora() {
 
     # ── page 2 ──────────────────────────────────────────────────────────────
     clear
-    box "Demo 5 — LoRa Mesh Radio  (2/4)"
+    box "Demo 4 — LoRa Mesh Radio  (2/4)"
     echo
     echo -e "  Nodes in between automatically extend the range."
     echo -e "  Each one relays packets — but can't read them."
@@ -298,7 +298,7 @@ do_lora() {
 
     # ── page 3 ──────────────────────────────────────────────────────────────
     clear
-    box "Demo 5 — LoRa Mesh Radio  (3/4)"
+    box "Demo 4 — LoRa Mesh Radio  (3/4)"
     echo
     echo -e "  ${BOLD}What you can actually do with this:${NC}"
     echo
@@ -324,7 +324,7 @@ do_lora() {
 
     # ── page 4 ──────────────────────────────────────────────────────────────
     clear
-    box "Demo 5 — LoRa Mesh Radio  (4/4)"
+    box "Demo 4 — LoRa Mesh Radio  (4/4)"
     echo
     echo -e "  ${BOLD}Hardware — pick one to get started:${NC}"
     echo
@@ -355,18 +355,18 @@ do_lora() {
     do_menu
 }
 
-# ── demo 5: file transfer receiver ────────────────────────────────────────────
+# ── demo 3: file transfer receiver ────────────────────────────────────────────
 
 do_files() {
     clear
     python3 /demo/lxmf.py files
 }
 
-# ── demo 3: phone setup + chat receiver ───────────────────────────────────────
+# ── demo 2: phone setup + chat receiver ───────────────────────────────────────
 
 do_phone_chat() {
     clear
-    box "Demo 3 — Phone → Linux Encrypted Messaging"
+    box "Demo 2 — Phone → Linux Encrypted Messaging"
 
     LOCAL_IP=$(get_local_ip)
 
@@ -532,7 +532,7 @@ do_nextsteps() {
     echo -e "  ${GREEN}★${NC}  ${BOLD}MeshChat${NC}  — browser-based LXMF chat UI, works with Sideband"
     echo -e "     ${CYAN}github.com/liamcottle/reticulum-meshchat${NC}"
     echo
-    echo -e "  ${GREEN}★${NC}  ${BOLD}LoRa radios${NC}  — take it fully off-grid (see Demo 5)"
+    echo -e "  ${GREEN}★${NC}  ${BOLD}LoRa radios${NC}  — take it fully off-grid (see Demo 4)"
     echo
     sep
     echo
