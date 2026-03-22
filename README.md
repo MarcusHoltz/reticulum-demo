@@ -12,7 +12,9 @@ This repo gives you a self-contained demo in Docker. Open a browser, press a num
 
 - [Docker](https://docs.docker.com/get-docker/) + [Docker Compose](https://docs.docker.com/compose/install/)
 - A modern browser
-- Optionally: an Android phone on the same WiFi
+- Optionally: 
+- an Android phone on the same WiFi
+- a domain name for HTTPS
 
 ---
 
