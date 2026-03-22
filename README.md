@@ -12,9 +12,7 @@ This repo gives you a self-contained demo in Docker. Open a browser, press a num
 
 - [Docker](https://docs.docker.com/get-docker/) + [Docker Compose](https://docs.docker.com/compose/install/)
 - A modern browser
-- Optionally: 
-- an Android phone on the same WiFi
-- a domain name for HTTPS
+- Optionally: an Android phone on the same WiFi
 
 ---
 
@@ -24,7 +22,7 @@ This repo gives you a self-contained demo in Docker. Open a browser, press a num
 docker compose up --build
 ```
 
-First run builds the image (~2–3 min). Then open **http://<your_ip>:7681** — you get
+First run builds the image (~2–3 min). Then open **http://localhost:7681** — you get
 an interactive menu. No typing required.
 
 ---

@@ -1,0 +1,10 @@
+# Not needed in the Docker build context
+setup.sh
+.claude/
+WORKING/
+WORKINGVANITY/
+caddy/
+NON-caddy/
+*.log
+*.zip
+*.png

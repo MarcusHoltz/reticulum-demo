@@ -1,0 +1,48 @@
+services:
+  reticulum-demo:
+    build: .
+
+    # host networking is required for:
+    #   - AutoInterface (mDNS multicast discovery across LAN)
+    #   - phones connecting directly to port 4965
+    #   - ttyd accessible on the host's port 7681
+    network_mode: host
+
+    volumes:
+      # persistent volume: rnsh identity and Reticulum storage survive restarts
+      - reticulum-data:/data
+      # files sent from phones land here and are visible on the host
+      - ./received:/received
+
+    environment:
+      - TERM=xterm-256color
+      - COLORTERM=truecolor
+
+    # tty: true lets Reticulum tools that expect a terminal behave correctly
+    tty: true
+    stdin_open: true
+
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+
+    # host networking lets Caddy reach localhost:7681 (ttyd) directly
+    # and bind to ports 80/443 on the host for the ACME HTTP challenge
+    network_mode: host
+
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # caddy-data persists the TLS certificate across restarts
+      - caddy-data:/data
+      - caddy-config:/config
+
+    restart: unless-stopped
+
+volumes:
+  reticulum-data:
+    driver: local
+  caddy-data:
+    driver: local
+  caddy-config:
+    driver: local

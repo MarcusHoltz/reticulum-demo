@@ -1,0 +1,5 @@
+# Runtime output
+received/
+
+# Claude Code project memory
+.claude/

@@ -1,0 +1,5 @@
+# Replace YOUR.DOMAIN.HERE with your actual domain name
+# example: reticulum.example.com
+YOUR.DOMAIN.HERE {
+    reverse_proxy localhost:7681
+}
