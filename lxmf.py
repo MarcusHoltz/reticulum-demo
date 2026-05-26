@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 lxmf.py — LXMF demos: encrypted chat, file transfer, vanity address generator.
-Usage:  python3 lxmf.py [chat|files|vanity]
+Usage:  python3 lxmf.py [chat|files|vanity|privacy]
 """
 
 import os, subprocess, sys, time
@@ -321,6 +321,82 @@ def run_files():
         print(f"\n  {DIM}Done.{NC}\n")
 
 
+# ── demo 8: privacy / metadata sniffer ────────────────────────────────────────
+
+def run_privacy():
+    rns_start()
+
+    # Persistent transport identity — read from storage if Transport hasn't set it yet
+    transport_id = ""
+    try:
+        if hasattr(RNS.Transport, "identity") and RNS.Transport.identity is not None:
+            transport_id = RNS.hexrep(RNS.Transport.identity.hash, delimit=False)
+    except Exception:
+        pass
+    if not transport_id:
+        tid_path = os.path.join(DATA_ROOT, "storage", "transport_identity")
+        if os.path.exists(tid_path):
+            try:
+                transport_id = RNS.hexrep(RNS.Identity.from_file(tid_path).hash, delimit=False)
+            except Exception:
+                pass
+
+    print(f"  {BOLD}Persistent node ID (Transport.identity):{NC}")
+    print(f"  {CYAN}{transport_id or '(check /data/storage/transport_identity)'}{NC}")
+    print(f"  {DIM}This ID is in every path-request this node sends, visible to{NC}")
+    print(f"  {DIM}first-hop neighbors — and links all destinations to one machine.{NC}")
+    print()
+
+    # Load the messaging identity to show what its announce contains.
+    # We compute the delivery hash directly — no need to start an LXMRouter,
+    # which would conflict if demo 3 is already running in another tab.
+    identity, _ = load_identity("lxmf_chat")
+    dest_hash    = RNS.Destination.hash(identity, "lxmf", "delivery")
+    dest_hex     = RNS.hexrep(dest_hash, delimit=False)
+    pub_hex      = identity.get_public_key().hex()
+    nickname     = "Linux Demo"  # display_name set by demo 3
+    ts           = time.strftime("%H:%M:%S")
+
+    sep()
+    print()
+    print(f"  {BOLD}What this node broadcasts in plaintext when it announces:{NC}")
+    print()
+    print(f"  [{DIM}{ts}{NC}]  {MAGENTA}{dest_hex[:16]}..{NC}  {BOLD}{nickname}{NC}  {DIM}← any node in range sees this{NC}")
+    print()
+    print(f"  {DIM}destination hash  {dest_hex}{NC}")
+    print(f"  {DIM}public key        {pub_hex[:32]}...{NC}")
+    print(f"  {DIM}nickname          {nickname}{NC}")
+
+    # Register handler to catch announces from other peers (Sideband, etc.)
+    seen = []
+
+    class AnnounceHandler:
+        aspect_filter = None
+        def received_announce(self, destination_hash, announced_identity, app_data):
+            ts_      = time.strftime("%H:%M:%S")
+            d_hex    = RNS.hexrep(destination_hash, delimit=False)[:16]
+            name     = LXMF.display_name_from_app_data(app_data) or "(no nickname)"
+            print(f"  [{DIM}{ts_}{NC}]  {MAGENTA}{d_hex}..{NC}  {BOLD}{name}{NC}  {DIM}[received]{NC}")
+            seen.append(destination_hash)
+
+    RNS.Transport.register_announce_handler(AnnounceHandler())
+
+    print()
+    sep()
+    print()
+    print(f"  {DIM}Listening for other nodes' announces...  (Ctrl+C or wait 45 s){NC}")
+    print()
+
+    try:
+        deadline = time.time() + 45
+        while time.time() < deadline:
+            time.sleep(0.5)
+        print(f"  {DIM}Done. Received {len(seen)} announce(s) from other nodes.{NC}")
+    except KeyboardInterrupt:
+        print(f"\n  {DIM}Done. Received {len(seen)} announce(s) from other nodes.{NC}")
+    print()
+
+
 # ── demo 7: vanity address ─────────────────────────────────────────────────────
 
 def _vanity_worker(prefix, result_queue, counter):
@@ -522,7 +598,8 @@ def run_vanity():
 
 if __name__ == "__main__":
     {
-        "chat":   run_chat,
-        "files":  run_files,
-        "vanity": run_vanity,
+        "chat":    run_chat,
+        "files":   run_files,
+        "vanity":  run_vanity,
+        "privacy": run_privacy,
     }.get(sys.argv[1] if len(sys.argv) > 1 else "chat", run_chat)()
