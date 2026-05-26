@@ -109,8 +109,15 @@ do_menu() {
     echo -e "    ${CYAN}[7]${NC}  ${BOLD}Generate a vanity address${NC}"
     echo
     sep
+    echo -e "  ${BOLD}What the Mesh Can See — Privacy & Metadata${NC}"
+    echo -e "  ${DIM}Live demo: watch announces arrive in plaintext. See exactly what${NC}"
+    echo -e "  ${DIM}any node in range can read — and what you can do about it.${NC}"
     echo
-    echo -e "  ${BOLD}Press 1 – 7${NC}"
+    echo -e "    ${CYAN}[8]${NC}  ${BOLD}Privacy & metadata demo${NC}"
+    echo
+    sep
+    echo
+    echo -e "  ${BOLD}Press 1 – 8${NC}"
     echo
 
     local key
@@ -124,6 +131,7 @@ do_menu() {
             5) do_lora ; break ;;
             6) do_nextsteps ; break ;;
             7) do_vanity ; break ;;
+            8) do_privacy ; break ;;
         esac
     done
 }
@@ -561,6 +569,83 @@ do_vanity() {
     do_menu
 }
 
+# ── demo 8: privacy & metadata ────────────────────────────────────────────────
+
+do_privacy() {
+    # ── page 1 ──────────────────────────────────────────────────────────────
+    clear
+    box "Demo 8 — What the Mesh Can See  (1/3)"
+    echo
+    echo -e "  Reticulum encrypts your messages."
+    echo -e "  It does not hide ${BOLD}that you sent them${NC} or ${BOLD}who you sent them to${NC}."
+    echo
+    sep
+    echo
+    printf "  ${GREEN}%-33s${NC}  ${YELLOW}%s${NC}\n" "WHAT RETICULUM ENCRYPTS" "WHAT THE MESH CAN SEE"
+    echo -e "  ${DIM}──────────────────────────────────────────────────────${NC}"
+    printf "  ${GREEN}%-33s${NC}  ${YELLOW}%s${NC}\n" "Message content (after link)"    "Your nickname & destination hash"
+    printf "  ${GREEN}%-33s${NC}  ${YELLOW}%s${NC}\n" "Identity (inside encrypted link)" "Who you're trying to reach"
+    printf "  ${GREEN}%-33s${NC}  ${YELLOW}%s${NC}\n" ""                                "Your persistent node ID"
+    printf "  ${GREEN}%-33s${NC}  ${YELLOW}%s${NC}\n" ""                                "That you sent anything at all"
+    echo
+    sep
+    echo
+    echo -e "  ${BOLD}How it leaks:${NC} Before a message is sent, your node broadcasts"
+    echo -e "  a plaintext ${BOLD}announce${NC} (your nickname + address) and a ${BOLD}path request${NC}"
+    echo -e "  (which destination you want to reach). Any node in range sees both."
+    echo
+    echo -e "  ${DIM}This is how routing works — by design. Not a bug.${NC}"
+    echo
+    sep
+    echo
+    echo -e "  ${DIM}press any key — next: live sniffer →${NC}"
+    read -r -n 1 -s
+
+    # ── page 2 ──────────────────────────────────────────────────────────────
+    clear
+    box "Demo 8 — What the Mesh Can See  (2/3)"
+    echo
+    echo -e "  ${BOLD}Live announce sniffer${NC}"
+    echo -e "  ${DIM}What any passive node on this mesh can read right now:${NC}"
+    echo
+    sep
+    echo
+    python3 /demo/lxmf.py privacy
+    sep
+    echo
+    echo -e "  ${DIM}press any key — next: what to do about it →${NC}"
+    read -r -n 1 -s
+
+    # ── page 3 ──────────────────────────────────────────────────────────────
+    clear
+    box "Demo 8 — What the Mesh Can See  (3/3)"
+    echo
+    echo -e "  ${BOLD}Mitigations${NC}"
+    echo
+    printf "  ${CYAN}%-30s${NC}  %s\n" "IFAC (interface auth codes)"  "Only your peers can join the mesh segment"
+    printf "  ${CYAN}%-30s${NC}  %s\n" "Skip announces"               "Exchange hashes out-of-band; don't broadcast"
+    printf "  ${CYAN}%-30s${NC}  %s\n" "Separate node per identity"   "Breaks the persistent node-ID linkage"
+    printf "  ${CYAN}%-30s${NC}  %s\n" "Tunnel over I2P or Tor"       "Hides Reticulum metadata from the carrier"
+    echo
+    sep
+    echo
+    echo -e "  ${BOLD}Honest positioning:${NC}"
+    echo
+    echo -e "  Plain TCP/IP   ${YELLOW}→${NC}  on-path node sees ${BOLD}both IP addresses${NC} directly"
+    echo -e "  Reticulum      ${YELLOW}→${NC}  on-path node sees ${BOLD}dest hash, node ID, nickname${NC}"
+    echo -e "  Tor / I2P      ${YELLOW}→${NC}  on-path relay sees ${BOLD}adjacent hop only${NC} — not endpoints"
+    echo
+    echo -e "  Reticulum is a great ${BOLD}encrypted mesh protocol${NC}."
+    echo -e "  It is not an anonymity network."
+    echo -e "  For high-stakes anonymity, layer on ${BOLD}I2P${NC} or ${BOLD}Tor${NC}."
+    echo
+    sep
+    echo
+    echo -e "  ${DIM}press any key to return to menu${NC}"
+    read -r -n 1 -s
+    do_menu
+}
+
 # ── dispatch ───────────────────────────────────────────────────────────────────
 
 case "${1:-menu}" in
@@ -573,6 +658,7 @@ case "${1:-menu}" in
     files)                do_files ;;
     next|nextsteps)       do_nextsteps ;;
     vanity)               do_vanity ;;
+    privacy)              do_privacy ;;
     status)               rnstatus ;;
     *)
         echo -e "\n  ${YELLOW}Unknown command:${NC} $1"
