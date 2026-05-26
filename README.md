@@ -43,6 +43,7 @@ First run builds the image (~2–3 min). Then open **http://<your_ip_or_domain_h
 [5]  LoRa Mesh Radio — conceptual explainer
 [6]  Next Steps — make it permanent
 [7]  Vanity Address Generator
+[8]  What the Mesh Can See — Privacy & Metadata
 ```
 
 **Demo 1 & 2** — Open two browser tabs at the same URL. Tab 1 presses `1` to start an rnsh server. Tab 2 presses `2` to connect. The hash is shared automatically — no copying, no typing. You get an encrypted shell between the two tabs routed over Reticulum. This identical command works over LoRa radio across kilometers. 
@@ -56,6 +57,8 @@ First run builds the image (~2–3 min). Then open **http://<your_ip_or_domain_h
 **Demo 6** — How to run this permanently on a server, get family and friends on it, and what else exists in the ecosystem.
 
 **Demo 7** — Vanity address generator. Search for a Reticulum address that starts with any hex prefix. Uses all CPU cores. Found addresses can be saved as your permanent messaging identity and/or exported as a QR code with the private key.
+
+**Demo 8** — Privacy & metadata explainer. Shows what Reticulum encrypts (message content) versus what the mesh can see in plaintext (your nickname, destination hash, persistent node ID, and who you're trying to reach). Includes a live announce sniffer showing exactly what any passive node in range reads off the wire, plus a comparison against Tor/I2P and concrete mitigations (IFAC, skipping announces, tunneling).
 
 ---
 
